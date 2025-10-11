@@ -1,0 +1,34 @@
+plugins {
+    id 'java'
+    id 'maven-publish'
+    id 'com.github.johnrengelman.shadow' version '8.1.1'
+}
+
+group 'fr.nicknqck'
+version '1.0'
+
+repositories {
+    mavenLocal()
+    mavenCentral()
+    maven { url = "https://repo.codemc.io/repository/maven-snapshots/" }
+    maven { url ="https://mvnrepository.com/artifact/"}
+    maven { url ='https://jitpack.io' }
+}
+
+compileJava.options.encoding = "UTF-8"
+java {
+    sourceCompatibility = JavaVersion.VERSION_1_8
+}
+dependencies {
+    compileOnly 'org.projectlombok:lombok:1.18.32'
+    annotationProcessor 'org.projectlombok:lombok:1.18.32'
+    testCompileOnly 'org.projectlombok:lombok:1.18.32'
+    testAnnotationProcessor 'org.projectlombok:lombok:1.18.32'
+    compileOnly files('C:\\Users\\NickNqck\\Documents\\dev\\serveur minecraft\\fk\\spigot.jar')
+    compileOnly files('C:\\Users\\NickNqck\\Documents\\dev\\serveur minecraft\\fk\\plugins\\FallenKingdom-2.24.6.jar')
+}
+
+shadowJar {
+}
+
+setLibsDirName("C:\\Users\\NickNqck\\Documents\\dev\\serveur minecraft\\fk\\plugins")

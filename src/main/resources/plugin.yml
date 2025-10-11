@@ -1,0 +1,5 @@
+name: Upper
+version: '1.0'
+main: fr.nicknqck.upper.Upper
+authors: [NickNqck]
+depend: [FallenKingdom]
