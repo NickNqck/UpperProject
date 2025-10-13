@@ -1,6 +1,6 @@
 package fr.nicknqck.upper;
 
-import org.bukkit.Bukkit;
+import fr.nicknqck.upper.utils.NMSUtils;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -10,6 +10,9 @@ import org.bukkit.event.player.PlayerJoinEvent;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.util.Objects;
+
+import static fr.nicknqck.upper.utils.NMSUtils.getNMSClass;
+import static fr.nicknqck.upper.utils.NMSUtils.sendPacket;
 
 public class JoinListener implements Listener {
 
@@ -40,24 +43,6 @@ public class JoinListener implements Listener {
             sendPacket(player, packet);
         } catch (Exception ex) {
             ex.fillInStackTrace();
-        }
-    }
-    private Class<?> getNMSClass(String name) {
-        String version = Bukkit.getServer().getClass().getPackage().getName().split("\\.")[3];
-        try {
-            return Class.forName("net.minecraft.server." + version + "." + name);
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
-            return null;
-        }
-    }
-    private void sendPacket(Player player, Object packet) {
-        try {
-            Object handle = player.getClass().getMethod("getHandle", new Class[0]).invoke(player);
-            Object playerConnection = handle.getClass().getField("playerConnection").get(handle);
-            playerConnection.getClass().getMethod("sendPacket", new Class[] { getNMSClass("Packet") }).invoke(playerConnection, packet);
-        } catch (Exception e) {
-            e.printStackTrace();
         }
     }
 

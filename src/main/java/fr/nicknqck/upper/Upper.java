@@ -1,5 +1,6 @@
 package fr.nicknqck.upper;
 
+import fr.nicknqck.upper.arena.ArenaCommand;
 import fr.nicknqck.upper.utils.EventUtils;
 import fr.nicknqck.upper.utils.NMSItemUtils;
 import lombok.Getter;
@@ -8,6 +9,7 @@ import net.minecraft.server.v1_8_R3.*;
 import org.bukkit.*;
 import org.bukkit.Material;
 import org.bukkit.World;
+import org.bukkit.command.PluginCommand;
 import org.bukkit.craftbukkit.v1_8_R3.entity.CraftVillager;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.*;
@@ -25,6 +27,7 @@ public final class Upper extends JavaPlugin {
     @Getter
     private static Upper instance;
 
+
     @Override
     public void onEnable() {
         instance = this;
@@ -40,6 +43,8 @@ public final class Upper extends JavaPlugin {
         EventUtils.registerEvents(new PapierEnchantManager());
         EventUtils.registerEvents(new MOTDChanger());
         EventUtils.registerEvents(new JoinListener());
+        PluginCommand command = getCommand("arena");
+        command.setExecutor(new ArenaCommand());
     }
 
     @Override
