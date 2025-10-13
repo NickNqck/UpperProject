@@ -10,6 +10,5 @@ public class MOTDChanger implements Listener {
     private void serverPingEvent(final ServerListPingEvent event) {
         event.setMotd("§cFallenKingdom§7, custom by§b @NickNqck");
         event.setMaxPlayers(6);
-
     }
 }

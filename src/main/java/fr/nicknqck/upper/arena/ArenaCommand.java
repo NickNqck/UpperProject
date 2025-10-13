@@ -89,6 +89,15 @@ public class ArenaCommand implements CommandExecutor, Listener {
                 for (final World world : Bukkit.getWorlds()) {
                     sender.sendMessage("world = "+world.getName() + " '( "+world+" )'");
                 }
+                for (final UUID uuid : this.teamMap.keySet()) {
+                    String string = uuid.toString();
+                    final Player player = Bukkit.getPlayer(uuid);
+                    if (player != null) {
+                        string+=(" "+player.getName());
+                    }
+                    string+=(" team = "+this.teamMap.get(uuid));
+                    commandSender.sendMessage(string);
+                }
                 return true;
             }
         }

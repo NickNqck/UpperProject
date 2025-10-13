@@ -29,6 +29,7 @@ public class ArenaCompletor implements TabCompleter {
                     }
                 }
                 if (commandSender.isOp()) {
+                    list.add("start");
                     list.add("list");
                 }
                 if (!strings[0].isEmpty()) {
