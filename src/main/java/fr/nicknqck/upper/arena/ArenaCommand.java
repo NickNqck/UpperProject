@@ -6,6 +6,7 @@ import fr.nicknqck.upper.Upper;
 import fr.nicknqck.upper.utils.EventUtils;
 import fr.nicknqck.upper.utils.ItemBuilder;
 import fr.nicknqck.upper.utils.NMSUtils;
+import lombok.Getter;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
@@ -33,6 +34,7 @@ public class ArenaCommand implements CommandExecutor, Listener {
     private boolean running = false;
     private final Map<UUID, Team> teamMap = new HashMap<>();
     private final Map<UUID, Marker> locationMap = new HashMap<>();
+    @Getter
     private UUID uuidWinner = null;
 
     @Override

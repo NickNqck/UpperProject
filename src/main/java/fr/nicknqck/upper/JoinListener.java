@@ -1,6 +1,5 @@
 package fr.nicknqck.upper;
 
-import fr.nicknqck.upper.utils.NMSUtils;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;

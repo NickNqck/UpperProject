@@ -1,6 +1,7 @@
 package fr.nicknqck.upper;
 
 import fr.nicknqck.upper.arena.ArenaCommand;
+import fr.nicknqck.upper.arena.ArenaCompletor;
 import fr.nicknqck.upper.utils.EventUtils;
 import fr.nicknqck.upper.utils.NMSItemUtils;
 import lombok.Getter;
@@ -45,6 +46,7 @@ public final class Upper extends JavaPlugin {
         EventUtils.registerEvents(new JoinListener());
         PluginCommand command = getCommand("arena");
         command.setExecutor(new ArenaCommand());
+        command.setTabCompleter(new ArenaCompletor((ArenaCommand) command.getExecutor()));
     }
 
     @Override
