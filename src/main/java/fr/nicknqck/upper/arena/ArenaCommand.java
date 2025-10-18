@@ -80,7 +80,7 @@ public class ArenaCommand implements CommandExecutor, Listener {
                     sender.sendMessage("§7Vous n'êtes pas le vainqueur de l'§carène§7.");
                     return true;
                 }
-                ((Player) commandSender).getWorld().dropItemNaturally(((Player) commandSender).getLocation(), new ItemStack(Material.NETHER_WARTS, 6));
+                ((Player) commandSender).getWorld().dropItemNaturally(((Player) commandSender).getLocation(), new ItemStack(Material.NETHER_STALK, 6));
                 ((Player) commandSender).getWorld().dropItemNaturally(((Player) commandSender).getLocation(), new ItemStack(Material.BLAZE_ROD, 2));
                 ((Player) commandSender).getWorld().dropItemNaturally(((Player) commandSender).getLocation(), new ItemStack(Material.GHAST_TEAR, 2));
                 commandSender.sendMessage("§7Les récompenses ont été jeté à vos pieds.");
@@ -176,6 +176,7 @@ public class ArenaCommand implements CommandExecutor, Listener {
         //Pour lui redonner son stuff ect
         Bukkit.getScheduler().scheduleSyncDelayedTask(Upper.getInstance(), () -> {
             final Player player = event.getPlayer();
+            player.getInventory().clear();
             player.getInventory().setHelmet(marker.armors[0]);
             player.getInventory().setChestplate(marker.armors[1]);
             player.getInventory().setLeggings(marker.armors[2]);
@@ -203,6 +204,8 @@ public class ArenaCommand implements CommandExecutor, Listener {
                     public void run() {
                         final Player player = Bukkit.getPlayer(uuid);
                         if (player != null) {
+                            locationMap.remove(player.getUniqueId());
+                            player.getInventory().clear();
                             player.getInventory().setHelmet(winMark.armors[0]);
                             player.getInventory().setChestplate(winMark.armors[1]);
                             player.getInventory().setLeggings(winMark.armors[2]);
@@ -213,6 +216,8 @@ public class ArenaCommand implements CommandExecutor, Listener {
                                 if (itemStack == null)continue;
                                 player.getInventory().setItem(count, itemStack);
                             }
+                            System.out.println("TP WINER 1 "+winMark.initLocation);
+                            System.out.println("TP WINER 2 "+winMark.tpLocation);
                             player.teleport(winMark.initLocation);
                             player.sendMessage("§7Vous avez été totalement rétablie de l'§carène§7.");
                             player.sendMessage("§bIl faudra faire la commande§6 /arena reward§b pour obtenir les récompenses de l'§carène§b.");
