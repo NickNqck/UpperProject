@@ -25,15 +25,15 @@ import org.bukkit.event.player.PlayerRespawnEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitRunnable;
 
-import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
+import java.util.concurrent.ConcurrentHashMap;
 
 public class ArenaCommand implements CommandExecutor, Listener {
 
     private boolean running = false;
-    private final Map<UUID, Team> teamMap = new HashMap<>();
-    private final Map<UUID, Marker> locationMap = new HashMap<>();
+    private final Map<UUID, Team> teamMap = new ConcurrentHashMap<>();
+    private final Map<UUID, Marker> locationMap = new ConcurrentHashMap<>();
     @Getter
     private UUID uuidWinner = null;
 
@@ -41,11 +41,12 @@ public class ArenaCommand implements CommandExecutor, Listener {
     public boolean onCommand(CommandSender commandSender, Command command, String s, String[] strings) {
         if (!(commandSender instanceof Player))return false;
         final Player sender = (Player) commandSender;
-        if (!sender.isOp()) {
-            return true;
-        }
         if (strings.length == 1) {
             if (strings[0].equalsIgnoreCase("start")) {
+                if (!sender.isOp()) {
+                    commandSender.sendMessage("§cIl faut être op pour faire cette commande");
+                    return true;
+                }
                 Bukkit.broadcastMessage("");
                 Bukkit.broadcastMessage("§bUn combat va bientôt être organisés, chaque équipe à§c 10 minutes§b pour choisir son combattant !");
                 System.out.println(sender.getName()+" a lancer le chrono");
@@ -167,6 +168,10 @@ public class ArenaCommand implements CommandExecutor, Listener {
         if (!this.locationMap.containsKey(event.getPlayer().getUniqueId()))return;
         final Marker marker = this.locationMap.get(event.getPlayer().getUniqueId());
         this.locationMap.remove(event.getPlayer().getUniqueId());
+        //Load le chunk au cas ou il n'est plus load
+        if (marker.initLocation.getWorld() == null || !marker.initLocation.getWorld().isChunkLoaded(marker.initLocation.getBlockX() >> 4, marker.initLocation.getBlockZ() >> 4)) {
+            marker.initLocation.getWorld().loadChunk(marker.initLocation.getBlockX() >> 4, marker.initLocation.getBlockZ() >> 4);
+        }
         event.setRespawnLocation(marker.initLocation);
         //Pour lui redonner son stuff ect
         Bukkit.getScheduler().scheduleSyncDelayedTask(Upper.getInstance(), () -> {
@@ -175,12 +180,15 @@ public class ArenaCommand implements CommandExecutor, Listener {
             player.getInventory().setChestplate(marker.armors[1]);
             player.getInventory().setLeggings(marker.armors[2]);
             player.getInventory().setBoots(marker.armors[3]);
-            int count = -1;
-            for (ItemStack itemStack : marker.inventory) {
-                count++;
-                if (itemStack == null)continue;
-                player.getInventory().setItem(count, itemStack);
+
+            for (int i = 0; i < marker.inventory.length; i++) {
+                ItemStack itemStack = marker.inventory[i];
+                if (itemStack != null){
+                    if (itemStack.getType().equals(Material.AIR))continue;
+                    player.getInventory().setItem(i, itemStack);
+                }
             }
+
             player.teleport(marker.initLocation);
             player.sendMessage("§7Vous avez été totalement rétablie de l'§carène§7.");
         }, 60);
@@ -236,7 +244,7 @@ public class ArenaCommand implements CommandExecutor, Listener {
     private static class TimeLeftRunnable extends BukkitRunnable {
 
         private final ArenaCommand arenaCommand;
-        private int time = 60*10;
+        private int time = 60;
 
         private TimeLeftRunnable(ArenaCommand arenaCommand) {
             this.arenaCommand = arenaCommand;
