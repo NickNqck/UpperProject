@@ -139,7 +139,8 @@ public class ArenaCommand implements CommandExecutor, Listener {
                         new ItemBuilder(Material.LAVA_BUCKET, 1).toItemStack(),
                         new ItemBuilder(Material.WATER_BUCKET, 1).toItemStack(),
                         new ItemBuilder(Material.LAVA_BUCKET, 1).toItemStack(),
-                        new ItemBuilder(Material.WATER_BUCKET, 1).toItemStack()
+                        new ItemBuilder(Material.WATER_BUCKET, 1).toItemStack(),
+                        new ItemBuilder(Material.ARROW, 8).toItemStack()
                 });
                 player.getInventory().setHelmet(new ItemStack(Material.IRON_HELMET));
                 player.getInventory().setChestplate(new ItemStack(Material.IRON_CHESTPLATE));
@@ -249,7 +250,7 @@ public class ArenaCommand implements CommandExecutor, Listener {
     private static class TimeLeftRunnable extends BukkitRunnable {
 
         private final ArenaCommand arenaCommand;
-        private int time = 60;
+        private int time = 60*10;
 
         private TimeLeftRunnable(ArenaCommand arenaCommand) {
             this.arenaCommand = arenaCommand;
